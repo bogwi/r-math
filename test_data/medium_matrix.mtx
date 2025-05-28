@@ -1,0 +1,16 @@
+%%MatrixMarket matrix coordinate integer symmetric
+% 7x7 symmetric test matrix
+7 7 13
+1 1 10
+2 2 20
+3 3 30
+4 4 40
+5 5 50
+6 6 60
+7 7 70
+1 2 1
+2 3 2
+3 4 3
+4 5 4
+5 6 5
+6 7 6 

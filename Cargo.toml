@@ -1,0 +1,37 @@
+[package]
+name = "rma"
+version = "0.1.0"
+edition = "2024"
+description = "Rare, high-performance mathematical algorithms for Rust."
+license = "MIT OR Apache-2.0"
+authors = ["Dan Vi <bogwi@rakumail.jp>"]
+documentation = "https://docs.rs/rma"       
+homepage = "https://github.com/bogwi/r-math"
+repository = "https://github.com/bogwi/r-math"
+readme = "README.md"
+keywords = ["math", "algorithms", "matrix", "linear-algebra", "scientific"]
+categories = ["science", "mathematics", "algorithms"]
+
+[dependencies]
+rand = "0.8"
+num-traits = "0.2.19"
+num-bigint = "0.4"
+
+sprs = { version = "0.11", optional = true }
+
+[features]
+simd = []
+
+[[bench]]
+name = "freivalds_bench"
+harness = false
+
+[[bench]]
+name = "cuthill_mckee_bench"
+harness = false
+
+[dev-dependencies]
+tempfile = "3"
+rayon = "1.10.0"
+criterion = "0.5"
+

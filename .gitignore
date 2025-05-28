@@ -1,0 +1,50 @@
+**/*.rs.bk
+**/*.swp
+**/*.swo
+**/*.tmp
+**/*.log
+Cargo.lock
+# By default, Cargo.lock is ignored for libraries, but not for binaries.
+# Uncomment the next line if you want to always ignore it:
+# Cargo.lock
+
+# IntelliJ/Rust plugin
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Byproducts of doc/test/build
+/target/
+**/target/
+**/*.rlib
+**/*.rmeta
+**/*.dSYM
+**/*.dSYM/*
+**/*.dSYM/**
+
+# Coverage/debug/test output
+/coverage/
+*.profraw
+*.profdata
+
+# Benchmarks
+/benches/**/target/
+/benches/**/Cargo.lock
+
+# Misc
+*.old
+*.orig
+*.bak
+*.tmp
+*.out
+*.log
+*.cache
+# End of Selection
