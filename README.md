@@ -8,6 +8,15 @@ A Rust crate for rare, high-performance mathematical algorithms not commonly fou
 ---
 
 ## Current Features
+- **Berlekamp's Algorithm**: Factorization of polynomials over finite fields (GF(p))
+    - This implementation supports polynomials over GF(p) for prime p, using u128 for all arithmetic.
+    - Uses Karatsuba multiplication for all degree polynomials.
+    - On M4Pro12, solves 256 degree polynomial over prime p, the largest 64 bit prime 18_446_744_073_709_551_557 in 
+      ```
+      berlekamp_roots_dense_deg256_p64b time:   [14.323 ms 14.345 ms 14.366 ms]
+      berlekamp_roots_sparse_deg256_p64b time:  [15.582 ms 15.609 ms 15.635 ms]
+      ```
+    - 128 bit primes are not the part of the benchmark, but values close to the above 64 bit prime will give you similar performance on 256 degree polynomial.
 
 - **Tonelli-Shanks**: Modular square roots (r^2 ≡ n mod p) over prime moduli (constant-time version)
 - **Cuthill–McKee & Reverse Cuthill–McKee**: Bandwidth reduction for sparse symmetric matrices (adjacency list, CSR, and CSC formats)
@@ -29,14 +38,14 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rma = "0.1"
+rma = "0.2"
 ```
 
 Enable SIMD features (nightly Rust required):
 
 ```toml
 [dependencies]
-rma = { version = "0.1", features = ["simd"] }
+rma = { version = "0.2", features = ["simd"] }
 ```
 ---
 
@@ -55,7 +64,7 @@ Benchmarks are provided using [criterion](https://crates.io/crates/criterion) in
   ```
 
 **On nightly Rust (to enable SIMD):**
-- Run all benchmarks with SIMD:
+- Run all benchmarks with SIMD (freivalds_bench is the only one that uses SIMD):
   ```sh
   cargo bench --features simd
   ```

@@ -43,14 +43,12 @@ Licensed under either of
 "#]
 #![cfg_attr(feature = "simd", feature(portable_simd))]
 
-
 pub mod freivalds;
 
 pub use freivalds::freivalds_verify_scalar;
 pub use freivalds::freivalds_verify_scalar_mod;
 #[cfg(feature = "simd")]
 pub use freivalds::freivalds_verify_simd;
-
 
 pub mod cuthill_mckee;
 pub use cuthill_mckee::{
@@ -60,3 +58,5 @@ pub use cuthill_mckee::{
 
 pub mod tonelli_shanks;
 pub use tonelli_shanks::{TonelliShanksError, tonelli_shanks_ct};
+
+pub mod berlekamp;

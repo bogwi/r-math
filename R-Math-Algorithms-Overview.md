@@ -1,7 +1,12 @@
 # R-Math Algorithms Overview
 
 ## Table of Contents
-
+- [Berlekamp's Root Finding Algorithm over finite fields (prime fields)](#berlekamp-s-root-finding-algorithm-over-finite-fields-prime-fields)
+  - [Overview](#overview)
+  - [Key Features](#key-features)
+  - [Applications](#applications)
+  - [Summary Table](#summary-table)
+  - [Sources](#sources)
 - [Tonelli–Shanks Algorithm](#tonelli–shanks-algorithm)
   - [Overview](#overview)
   - [Algorithm Overview](#algorithm-overview)
@@ -21,6 +26,58 @@
   - [Error and Probability](#error-and-probability)
   - [Key Features](#key-features-1)
   - [Applications](#applications-1)
+
+## Berlekamp's Root Finding Algorithm over finite fields (prime fields)
+
+### Overview
+
+Berlekamp's algorithm efficiently finds all roots of a univariate polynomial over a finite field GF(p), where p is a prime. The implementation in `berlekamp.rs` supports polynomials with coefficients and arithmetic in `u128`, and works for any prime modulus. The algorithm handles all cases, including repeated roots and non-monic polynomials, and is robust for both small and large primes.
+
+The core idea is to use the Berlekamp matrix to find a basis for the nullspace of a certain linear operator, which reveals nontrivial factors of the polynomial. The algorithm recursively factors the polynomial into irreducible components, ultimately extracting all roots.
+
+### Key Features
+
+- **Supports any prime modulus**: Works for all prime fields GF(p), with p up to 2^128-1.
+- **Handles all polynomial degrees**: Works for linear, quadratic, cubic, and higher-degree polynomials.
+- **Robust to repeated roots**: Correctly finds roots even when the polynomial has repeated factors.
+- **Automatic monic conversion**: Internally converts polynomials to monic form as needed.
+- **Efficient arithmetic**: Uses Karatsuba multiplication for large polynomials, and modular arithmetic throughout.
+- **Formal derivative and square-free factorization**: Handles cases where the formal derivative is zero (i.e., inseparable polynomials).
+- **Comprehensive test suite**: Extensively tested on all edge cases, including irreducible, reducible, and repeated-root polynomials.
+- **Example usage**:
+  ```rust
+  use rma::berlekamp::{Poly, berlekamp_roots};
+  let p = 7u128;
+  let f = Poly::new(vec![5, 0, 1], p); // x^2 + 5
+  let mut roots = berlekamp_roots(&f);
+  roots.sort();
+  assert_eq!(roots, vec![3, 4]);
+  ```
+
+### Applications
+
+- **Coding theory**: Decoding BCH and Reed–Solomon codes.
+- **Cryptography**: Finding roots in cryptographic protocols over finite fields.
+- **Computational algebra**: Factoring polynomials and finding solutions to equations in GF(p).
+- **Number theory**: Studying properties of polynomials over finite fields.
+
+### Summary Table
+
+| Feature                | Supported |
+|------------------------|-----------|
+| Prime fields (GF(p))   | Yes       |
+| Arbitrary degree       | Yes       |
+| Repeated roots         | Yes       |
+| Non-monic polynomials  | Yes       |
+| Large primes           | Yes       |
+| Efficient multiplication | Yes    |
+| Handles f'(x) = 0      | Yes       |
+
+### Sources
+
+- [Encyclopedia: Berlekamp's Algorithm](https://encyclopedia.pub/entry/32373)
+- [Wikipedia: Berlekamp's algorithm](https://en.wikipedia.org/wiki/Berlekamp%27s_algorithm)
+- [USC lecture notes (PDF)](https://www.usc.es/regaca/mladra/docs/berlekamp.pdf)
 
 ## Tonelli–Shanks Algorithm
 

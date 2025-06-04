@@ -13,7 +13,7 @@
 //! # Example
 //! ```
 //! use rma::cuthill_mckee::{CscMatrix, reverse_cuthill_mckee_csc};
-//! 
+//!
 //! // Create a sparse matrix in CSC format
 //! let matrix = CscMatrix {
 //!     nrows: 4,
@@ -22,7 +22,7 @@
 //!     indices: vec![0, 1, 0, 2, 1, 3, 2, 3],
 //!     data: Some(vec![1.0; 8]),
 //! };
-//! 
+//!
 //! // Apply RCM reordering
 //! let perm = reverse_cuthill_mckee_csc(&matrix).unwrap();
 //! ```
