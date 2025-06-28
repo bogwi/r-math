@@ -8,6 +8,7 @@ A Rust crate for rare, high-performance mathematical algorithms not commonly fou
 ---
 
 ## Current Features
+- **Chakravala method**: Solves Pell's equation x² - Dy² = 1 for a given non-square integer D.
 - **Berlekamp's Algorithm**: Factorization of polynomials over finite fields (GF(p))
     - This implementation supports polynomials over GF(p) for prime p, using u128 for all arithmetic.
     - Uses Karatsuba multiplication for all degree polynomials.
@@ -18,7 +19,6 @@ A Rust crate for rare, high-performance mathematical algorithms not commonly fou
       ```
     - 128 bit primes are not the part of the benchmark, but values close to the above 64 bit prime will give you similar performance on 256 degree polynomial.
 
-- **Chakravala method**: Solves Pell's equation x² - Dy² = 1 for a given non-square integer D.
 - **Tonelli-Shanks**: Modular square roots (r^2 ≡ n mod p) over prime moduli (constant-time version)
 - **Cuthill–McKee & Reverse Cuthill–McKee**: Bandwidth reduction for sparse symmetric matrices (adjacency list, CSR, and CSC formats)
     - **Supports conversion from [`sprs`](https://crates.io/crates/sprs) sparse matrix types**

@@ -48,51 +48,78 @@ use num_traits::{One, Signed, Zero};
 /// assert!(chakravala(&d_sq).is_none());
 /// ```
 pub fn chakravala(d: &BigUint) -> Option<(BigUint, BigUint)> {
+    // Compute the integer square root of d
     let d_sqrt = d.sqrt();
+    // If d is a perfect square, Pell's equation has no non-trivial solution
     if &d_sqrt * &d_sqrt == *d {
         return None; // d is a perfect square, no non-trivial solution
     }
 
-    let d_bigint = d.to_bigint().unwrap();
-
+    // Initial values: a = floor(sqrt(d)), b = 1
     let mut a = d_sqrt.clone();
     let mut b = BigUint::one();
+    
+    // Convert d to BigInt for signed arithmetic
+    let d_bigint = d.to_bigint().unwrap();
+    // k = a^2 - d
     let mut k = (&a * &a).to_bigint().unwrap() - &d_bigint;
-
+    
+    // If k = 0, this is a degenerate case (should not occur for non-square d)
     if k.is_zero() {
-        // This case should not be reached due to the perfect square check, but for safety:
         return None;
     }
 
+    // Main Chakravala iteration loop: continue until k == 1
     while !k.is_one() {
-        let k_abs_bigint = k.abs();
-        let k_abs_biguint = k_abs_bigint.to_biguint().unwrap();
-        let m_congruence = (&a * &b.modinv(&k_abs_biguint).unwrap()).to_bigint().unwrap() % &k;
+        let k_abs = k.abs();
+        let k_abs_biguint = k_abs.to_biguint().unwrap();
+        
+        // Find the modular inverse of b mod |k|, needed for the congruence condition
+        let b_inv = match b.modinv(&k_abs_biguint) {
+            Some(inv) => inv,
+            None => return None, // Should not happen for valid inputs
+        };
+        
+        // Find m such that (a + b*m) ≡ 0 mod k, and |m^2 - d| is minimized
+        // This is the heart of the Chakravala method
+        let m_congruence = (&a * &b_inv).to_bigint().unwrap() % &k;
         let m_neg = -m_congruence;
 
+        // Ensure m is positive and nonzero
         let mut m = m_neg.clone();
         if m.is_negative() || m.is_zero() {
-            m += &k_abs_bigint;
+            m += &k_abs;
         }
 
+        // Search for the m that minimizes |m^2 - d|, starting from the congruence solution
         let mut best_m = m.clone();
         let mut min_diff = (&best_m * &best_m - &d_bigint).abs();
 
-        loop {
-            let next_m = &m + &k_abs_bigint;
+        // Limit the search to avoid performance issues for large k
+        let search_limit = core::cmp::min(k_abs.bits() as usize + 5, 30);
+        for _ in 0..search_limit {
+            let next_m = &m + &k_abs;
             let diff = (&next_m * &next_m - &d_bigint).abs();
             if diff < min_diff {
-                min_diff = diff;
-                best_m = next_m;
-            } else {
+                min_diff = diff.clone();
+                best_m = next_m.clone();
+                m = next_m;
+            } else if diff > &min_diff * 2u32 {
+                // Early exit if the difference is getting much worse
                 break;
+            } else {
+                m = next_m;
             }
         }
         
         let m = best_m;
         
-        let new_a = (&a.to_bigint().unwrap() * &m + &d_bigint * b.to_bigint().unwrap()) / &k_abs_bigint;
-        let new_b = (&a.to_bigint().unwrap() + b.to_bigint().unwrap() * &m) / &k_abs_bigint;
+        // Update a, b, k for the next iteration using Chakravala formulas
+        // new_a = (a*m + d*b) / |k|
+        // new_b = (a + b*m) / |k|
+        // new_k = (m^2 - d) / k
+        let new_a = (&a.to_bigint().unwrap() * &m + &d_bigint * b.to_bigint().unwrap()) / &k_abs;
+        let new_b = (&a.to_bigint().unwrap() + b.to_bigint().unwrap() * &m) / &k_abs;
         let new_k = (m.pow(2) - &d_bigint) / &k;
 
         a = new_a.to_biguint().unwrap();
@@ -100,6 +127,7 @@ pub fn chakravala(d: &BigUint) -> Option<(BigUint, BigUint)> {
         k = new_k;
     }
 
+    // When k == 1, (a, b) is the fundamental solution
     Some((a, b))
 }
 
