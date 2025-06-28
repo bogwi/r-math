@@ -4,13 +4,12 @@
 A Rust crate for rare, high-performance mathematical algorithms not commonly found in mainstream libraries aimed for practical use.
 
 ## Features
+- Chakravala: Solves Pell's equation x² - d*y² = 1 for a given non-square integer d.
 - Berlekamp's Algorithm: Factorization of polynomials over finite fields (GF(p))
 - Tonelli-Shanks: Modular square roots (r^2 ≡ n mod p) over prime moduli (constant-time version)
 - Cuthill-McKee & Reverse Cuthill-McKee: Bandwidth reduction for sparse symmetric matrices (adjacency list, CSR, and CSC formats)
     - Supports conversion from `sprs` sparse matrix types
 - Freivalds' Algorithm: Fast probabilistic verification of matrix multiplication (scalar, modular, and SIMD-accelerated variants)
-- Chakravala: Solves Pell's equation x² - d*y² = 1 for a given non-square integer d.
-
 - Well-documented, tested, and benchmarked implementations
 - SIMD acceleration for Freivalds' algorithm (nightly Rust required, `simd` feature)
 - `no_std` compatible (except for benchmarks and RNG)

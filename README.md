@@ -39,14 +39,14 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rma = "0.2"
+rma = "0.3"
 ```
 
 Enable SIMD features (nightly Rust required):
 
 ```toml
 [dependencies]
-rma = { version = "0.2", features = ["simd"] }
+rma = { version = "0.3", features = ["simd"] }
 ```
 ---
 
