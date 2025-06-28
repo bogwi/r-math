@@ -34,8 +34,14 @@ harness = false
 name = "berlekamp_bench"
 harness = false
 
+[[bench]]
+name = "chakravala_bench"
+harness = false
+
 [dev-dependencies]
 tempfile = "3"
 rayon = "1.10.0"
 criterion = "0.5"
+proptest = "1.4"
+num-integer = "0.1.46"
 
